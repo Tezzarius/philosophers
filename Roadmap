@@ -1,0 +1,20 @@
+Erster Fokus: Das Grundgerüst:
+
+Parsing der Argumente
+
+number of philos
+time to die
+time to eat
+time to sleep
+*number of meals optional
+
+Datenstrukturen entwerfen
+
+Threads erstellen und korrekt beenden
+
+Vor jeglicher Logik die folgende Struktur:
+
+✓ Argumente validieren
+✓ Struktur für Simulation erstellen
+✓ Philosophen-Struktur mit ID, Thread-Handle, letzter Essenszeit
+✓ Mutexes für jeden Fork anlegen
