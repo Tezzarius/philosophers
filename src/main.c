@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 15:27:27 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/10/24 16:16:24 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/10/25 10:58:17 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	main(int ac, char **av)
 {
-	(void)av;
 	if (ac < 4 || ac > 6)
 		return (1);
 	return (0);
