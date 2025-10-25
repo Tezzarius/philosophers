@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 11:50:37 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/10/25 13:42:43 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/10/25 13:56:48 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,9 @@ int init_data(t_data *data, int ac, char **av)
 	}
 	else
 		data->must_eat = -1;
-	data->start_time = 0;
+	data->start_time = timestamp_ms();
 	data->forks = NULL;
-	// data->print = NULL;
+	pthread_mutex_init(&data->print, NULL);
 	data->dead = 0;
 	return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 14:54:13 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/10/25 13:39:29 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/10/25 13:53:57 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,10 @@ typedef	struct s_philo
 /*                                  PROTOTYPES                                */
 /* ************************************************************************** */
 
-int init_data(t_data *data, int ac, char **av);
-int	ft_atoi(const char *nptr);
+int			init_data(t_data *data, int ac, char **av);
+int			ft_atoi(const char *nptr);
+long long	timestamp_ms(void);
+void		smart_sleep(long long ms);
+void		print_status(t_data *data, int id, char	*msg);
 
 #endif
