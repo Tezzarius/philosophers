@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 14:54:13 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/10/24 15:21:11 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/10/25 13:39:29 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,40 @@
 /*                                    DEFINES                                 */
 /* ************************************************************************** */
 
-
+# define PHERROR "philo: error: "
 
 /* ************************************************************************** */
 /*                                    STRUCTS                                 */
 /* ************************************************************************** */
 
+typedef struct s_data
+{
+	int				philo_count;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				must_eat;
+	long long		start_time;
+	pthread_mutex_t	*forks;
+	pthread_mutex_t print;
+	int				dead;
+	// t_philo			*philos;
+}	t_data;
 
+typedef	struct s_philo
+{
+	int			id;
+	int			meals;
+	long long	last_meal;
+	pthread_t	thread;
+	t_data		*data;	
+}	t_philo;
 
 /* ************************************************************************** */
 /*                                  PROTOTYPES                                */
 /* ************************************************************************** */
 
-
+int init_data(t_data *data, int ac, char **av);
+int	ft_atoi(const char *nptr);
 
 #endif

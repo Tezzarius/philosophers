@@ -12,7 +12,7 @@ RED = \033[0;31m
 
 # Compiler and flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -pthread
 INCLUDES = -I./inc
 
 # Directories
@@ -20,7 +20,8 @@ SRC_DIR = src
 OBJ_DIR = obj
 
 # Source files
-SRC = src/main.c
+SRC =	src/main.c\
+		src/parsing_and_init.c
 
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
 HEAD = inc/philo.h
