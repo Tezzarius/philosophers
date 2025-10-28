@@ -20,10 +20,13 @@ SRC_DIR = src
 OBJ_DIR = obj
 
 # Source files
-SRC =	src/main.c\
+SRC =	src/forks.c\
 		src/init.c\
-		src/print.c\
-		src/time.c
+		src/main.c\
+		src/monitor.c\
+		src/philo.c\
+		src/setup.c\
+		src/utils.c
 
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRC))
 HEAD = inc/philo.h

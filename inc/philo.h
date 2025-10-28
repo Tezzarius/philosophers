@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 14:54:13 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/10/25 13:53:57 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/10/28 21:35:02 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@
 
 # include <stdio.h>
 # include <stdlib.h>
-# include <string.h>
 # include <unistd.h>
 # include <pthread.h>
 # include <sys/time.h>
@@ -27,8 +26,6 @@
 /* ************************************************************************** */
 /*                                    DEFINES                                 */
 /* ************************************************************************** */
-
-# define PHERROR "philo: error: "
 
 /* ************************************************************************** */
 /*                                    STRUCTS                                 */
@@ -43,28 +40,34 @@ typedef struct s_data
 	int				must_eat;
 	long long		start_time;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t print;
-	int				dead;
-	// t_philo			*philos;
+	struct s_philo	*philos;
+	pthread_mutex_t	print_lock;
+	int				someone_dead;
 }	t_data;
 
-typedef	struct s_philo
+typedef struct s_philo
 {
 	int			id;
-	int			meals;
-	long long	last_meal;
 	pthread_t	thread;
-	t_data		*data;	
+	t_data		*data;
+	long long	last_meal;
+	int			meals_eaten;
 }	t_philo;
+
 
 /* ************************************************************************** */
 /*                                  PROTOTYPES                                */
 /* ************************************************************************** */
 
-int			init_data(t_data *data, int ac, char **av);
-int			ft_atoi(const char *nptr);
+int			parse_args(t_data *data, int ac, char **av);
+void		*philo_routine(void *arg);
+int			init_forks(t_data *data);
+int			init_philos(t_data *data);
 long long	timestamp_ms(void);
-void		smart_sleep(long long ms);
-void		print_status(t_data *data, int id, char	*msg);
+void		print_status(t_philo *philo, char *msg);
+void		take_forks(t_philo *philo);
+void		drop_forks(t_philo *philo);
+void		*monitor(void *arg);
+void		smart_sleep(t_philo *philo, long long ms);
 
 #endif

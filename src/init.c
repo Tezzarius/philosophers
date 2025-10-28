@@ -6,58 +6,56 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 11:50:37 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/10/25 13:56:48 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/10/28 19:02:47 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_atoi(const char *nptr)
+static int	philo_atoi(const char *str)
 {
-	size_t	i;
-	size_t	neg;
-	size_t	dest;
+	int	i;
+	int	res;
 
-	i = 0;
-	neg = 1;
-	dest = 0;
-	while ((nptr[i] == ' ') || (nptr[i] >= 9 && nptr[i] <= 13))
-		i++;
-	if ((nptr[i] == '+') || (nptr[i] == '-'))
-	{
-		if (nptr[i] == '-')
-			neg = -1;
-		i++;
-	}
-	while ((nptr[i] >= '0') && (nptr[i] <= '9'))
-	{
-		dest = dest * 10;
-		dest = dest + (nptr[i] - '0');
-		i++;
-	}
-	return (dest * neg);
+	i = -1;
+	res = 0;
+	while (str[++i] && str[i] >= '0' && str[i] <= '9')
+		res = res * 10 + (str[i] - '0');
+	return (res);
 }
 
-int init_data(t_data *data, int ac, char **av)
+static int	valid_digit(char *s)
 {
-	if ((data->philo_count = ft_atoi(av[1])) < 1)
-		return 1;
-	if ((data->time_to_die = ft_atoi(av[2])) < 1)
-		return 1;
-	if ((data->time_to_eat = ft_atoi(av[3])) < 1)
-		return 1;
-	if ((data->time_to_sleep = ft_atoi(av[4])) < 1)
-		return 1;
+	int	i;
+
+	if (!*s)
+		return (0);
+	i = -1;
+	while (s[++i])
+		if (s[i] < '0' || s[i] > '9')
+			return (0);
+	return (1);
+}
+
+int	parse_args(t_data *data, int ac, char **av)
+{
+	int	i;
+	
+	if (ac != 5 && ac != 6)
+		return (printf("Usage: philos, die, eat, sleep, must_eat(opt)"), 1);
+	i = 0;
+	while (++i < ac)
+		if (!valid_digit(av[i]))
+			return (printf("Error: Non-numeric argument detected.\n"), 1);
+	data->philo_count = philo_atoi(av[1]);
+	data->time_to_die = philo_atoi(av[2]);
+	data->time_to_eat = philo_atoi(av[3]);
+	data->time_to_sleep = philo_atoi(av[4]);
+	data->must_eat = -1;
 	if (ac == 6)
-	{
-		if ((data->must_eat = ft_atoi(av[5])) < 1)
-			return 1;
-	}
-	else
-		data->must_eat = -1;
-	data->start_time = timestamp_ms();
-	data->forks = NULL;
-	pthread_mutex_init(&data->print, NULL);
-	data->dead = 0;
-	return 0;
+		data->must_eat = philo_atoi(av[5]);
+	if (data->philo_count < 1 || data->time_to_die < 1
+		|| data->time_to_eat < 1 || data->time_to_sleep < 1)
+		return (printf("Error: Values must be greater than 0.\n"), 1);
+	return (0);
 }

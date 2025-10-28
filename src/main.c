@@ -6,54 +6,59 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 15:27:27 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/10/25 14:23:49 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/10/28 21:15:10 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-typedef struct s_tread_arg
+static void	cleanup(t_data *data)
 {
-	t_data *data;
-	int		i;
-}	t_thread_arg;
+	int	i;
 
-void	*thread_print(void *arg)
-{
-	t_thread_arg	*a;
-	
-	a = (t_thread_arg *)arg;
-	print_status(a->data, a->i, "tot");
-	free(a);
-	return NULL;
+	i = 0;
+	while (i < data->philo_count)
+		pthread_mutex_destroy(&data->forks[i++]);
+	pthread_mutex_destroy(&data->print_lock);
+	free(data->forks);
+	free(data->philos);
 }
+
+// Debug
+//
+// static void	print_data(t_data *data)
+// {
+// 	printf("philos: %d\ndie: %d\neat: %d\nsleep: %d\nmust_eat: %d\n",
+// 		data->philo_count, data->time_to_die, data->time_to_eat,
+// 		data->time_to_sleep, data->must_eat);
+// }
 
 int	main(int ac, char **av)
 {
-	t_data	data;
-	int		i;
-	pthread_t	th[10];
-	t_thread_arg	*arg;
+	t_data		data;
+	int			i;
+	pthread_t	monitor_thread;
 
-	i = 0;
-	if (ac < 5 || ac > 6)
-		return (write(2, PHERROR "Wrong amount of arguments\n", 41), 1);
-	if (init_data(&data, ac, av))
-		return (write(2, PHERROR "Wrong input\n", 27), 1);
-	smart_sleep(200);
-	while (i < 10)
+	if (parse_args(&data, ac, av) == 1)
+		return (1);
+	if (init_forks(&data) || init_philos(&data))
+		return (printf("Error: Init failed.\n"), 1);
+	pthread_mutex_init(&data.print_lock, NULL);
+	data.someone_dead = 0;
+	data.start_time = timestamp_ms();
+	i = -1;
+	while (++i < data.philo_count)
 	{
-		arg = malloc(sizeof(*arg));
-		arg->data = &data;
-		arg->i = i;
-		pthread_create(&th[i], NULL, thread_print, arg);
-		i++;	
+		data.philos[i].last_meal = data.start_time;
+		data.philos[i].meals_eaten = 0;
+		pthread_create(&data.philos[i].thread,
+			NULL, philo_routine, &data.philos[i]);
 	}
+	pthread_create(&monitor_thread, NULL, monitor, &data);
+	pthread_join(monitor_thread, NULL);
 	i = 0;
-	while (i < 10)
-	{
-		pthread_join(th[i], NULL);
-		i++;
-	}
-	return (0);
+	while (i < data.philo_count)
+		pthread_join(data.philos[i++].thread, NULL);
+	cleanup(&data);
+	return (0);	
 }
