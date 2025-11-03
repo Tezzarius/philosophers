@@ -6,16 +6,16 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 20:06:22 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/10/28 21:37:11 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/03 11:33:47 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*philo_routine(void *arg)
+void	*routine(void *arg)
 {
 	t_philo	*philo;
-	
+
 	philo = (t_philo *)arg;
 	if (philo->id % 2 == 0)
 		usleep(1000);

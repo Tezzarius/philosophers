@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 15:27:27 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/10/28 21:15:10 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/03 11:34:01 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,7 @@ int	main(int ac, char **av)
 	{
 		data.philos[i].last_meal = data.start_time;
 		data.philos[i].meals_eaten = 0;
-		pthread_create(&data.philos[i].thread,
-			NULL, philo_routine, &data.philos[i]);
+		pthread_create(&data.philos[i].thread, NULL, routine, &data.philos[i]);
 	}
 	pthread_create(&monitor_thread, NULL, monitor, &data);
 	pthread_join(monitor_thread, NULL);
@@ -60,5 +59,5 @@ int	main(int ac, char **av)
 	while (i < data.philo_count)
 		pthread_join(data.philos[i++].thread, NULL);
 	cleanup(&data);
-	return (0);	
+	return (0);
 }

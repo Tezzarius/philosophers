@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 20:43:45 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/10/28 20:57:23 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/03 11:27:00 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,11 @@ void	take_forks(t_philo *philo)
 
 void	drop_forks(t_philo *philo)
 {
-	int left;
-	int right;
+	int	left;
+	int	right;
 
 	left = philo->id;
 	right = (philo->id + 1) % philo->data->philo_count;
 	pthread_mutex_unlock(&philo->data->forks[left]);
-	pthread_mutex_unlock(&philo->data->forks[right]);	
+	pthread_mutex_unlock(&philo->data->forks[right]);
 }

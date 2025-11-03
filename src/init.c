@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 11:50:37 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/10/28 19:02:47 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/03 11:27:16 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	valid_digit(char *s)
 int	parse_args(t_data *data, int ac, char **av)
 {
 	int	i;
-	
+
 	if (ac != 5 && ac != 6)
 		return (printf("Usage: philos, die, eat, sleep, must_eat(opt)"), 1);
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 14:54:13 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/10/28 21:35:02 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/03 11:33:54 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,12 @@ typedef struct s_philo
 	int			meals_eaten;
 }	t_philo;
 
-
 /* ************************************************************************** */
 /*                                  PROTOTYPES                                */
 /* ************************************************************************** */
 
 int			parse_args(t_data *data, int ac, char **av);
-void		*philo_routine(void *arg);
+void		*routine(void *arg);
 int			init_forks(t_data *data);
 int			init_philos(t_data *data);
 long long	timestamp_ms(void);
