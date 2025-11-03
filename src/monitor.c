@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 21:03:34 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/10/28 21:39:11 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/03 11:44:31 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,14 @@ static int	check_all_full(t_data *data)
 	return (1);
 }
 
+static void	setdead(t_data *data, int i)
+{
+	data->someone_dead = 1;
+	printf("%lld %d died\n", timestamp_ms() - data->start_time,
+		data->philos[i].id + 1);
+	pthread_mutex_unlock(&data->print_lock);
+}
+
 void	*monitor(void *arg)
 {
 	t_data	*data;
@@ -39,13 +47,7 @@ void	*monitor(void *arg)
 			pthread_mutex_lock(&data->print_lock);
 			if ((timestamp_ms() - data->philos[i].last_meal)
 				> data->time_to_die)
-			{
-				data->someone_dead = 1;
-				printf("%lld %d died\n", timestamp_ms() - data->start_time,
-					data->philos[i].id + 1);
-				pthread_mutex_unlock(&data->print_lock);
-				return (NULL);
-			}
+				return (setdead(data, i), NULL);
 			pthread_mutex_unlock(&data->print_lock);
 		}
 		if (check_all_full(data))
