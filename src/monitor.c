@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 21:03:34 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/11/03 12:14:19 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/03 13:17:29 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,15 @@ static int	check_all_full(t_data *data)
 		return (0);
 	i = -1;
 	while (++i < data->philo_count)
+	{
+		pthread_mutex_lock(&data->print_lock);
 		if (data->philos[i].meals_eaten < data->must_eat)
+		{
+			pthread_mutex_unlock(&data->print_lock);
 			return (0);
+		}
+		pthread_mutex_unlock(&data->print_lock);
+	}
 	return (1);
 }
 
@@ -42,7 +49,7 @@ void	*monitor(void *arg)
 	while (!data->someone_dead)
 	{
 		i = -1;
-		while (++i < data->philo_count && !data->someone_dead)
+		while (++i < data->philo_count)
 		{
 			pthread_mutex_lock(&data->print_lock);
 			if ((timestamp_ms() - data->philos[i].last_meal)

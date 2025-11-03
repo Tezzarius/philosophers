@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 13:52:22 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/11/03 11:28:52 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/03 13:13:09 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,15 @@ void	smart_sleep(t_philo *philo, long long ms)
 	long long	start;
 
 	start = timestamp_ms();
-	while (!philo->data->someone_dead)
+	while (1)
 	{
+		pthread_mutex_lock(&philo->data->print_lock);
+		if (philo->data->someone_dead)
+		{
+			pthread_mutex_unlock(&philo->data->print_lock);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->data->print_lock);
 		if (timestamp_ms() - start >= ms)
 			break ;
 		usleep(500);
