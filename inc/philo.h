@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 14:54:13 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/11/03 11:33:54 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/03 15:53:45 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,9 @@ typedef struct s_philo
 /* ************************************************************************** */
 
 int			parse_args(t_data *data, int ac, char **av);
-void		*routine(void *arg);
+void		*routine_even(void *arg);
+void		*routine_odd(void *arg);
+void		*routine_single(void *arg);
 int			init_forks(t_data *data);
 int			init_philos(t_data *data);
 long long	timestamp_ms(void);
@@ -68,5 +70,6 @@ void		take_forks(t_philo *philo);
 void		drop_forks(t_philo *philo);
 void		*monitor(void *arg);
 void		smart_sleep(t_philo *philo, long long ms);
+int			create_thread(t_data *data, int i);
 
 #endif

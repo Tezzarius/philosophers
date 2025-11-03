@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 13:52:22 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/11/03 13:13:09 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/03 15:53:18 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,25 @@ void	smart_sleep(t_philo *philo, long long ms)
 			break ;
 		usleep(500);
 	}
+}
+
+int	create_thread(t_data *data, int i)
+{
+	data->philos[i].last_meal = data->start_time;
+	data->philos[i].meals_eaten = 0;
+	if ((data->philo_count) == 0 && pthread_create(data->philos[i].thread, NULL, routine_single, &data->philos[i]))
+		pthread_join(data->philos[i].thread, NULL);
+	else if ((data->philo_count % 2) == 0 && pthread_create(data->philos[i].thread, NULL, routine_even, &data->philos[i]))
+	{
+		while (i >= 0)
+			pthread_join(data->philos[i--].thread, NULL);
+		return (0);
+	}
+	else if (pthread_create(data->philos[i].thread, NULL, routine_odd, &data->philos[i]))
+	{
+		while (i >= 0)
+			pthread_join(data->philos[i--].thread, NULL);
+		return (0);
+	}
+	return (1);
 }
