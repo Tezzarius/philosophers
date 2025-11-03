@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 20:06:22 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/11/03 11:33:47 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/03 12:55:31 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ void	*routine(void *arg)
 		philo->last_meal = timestamp_ms();
 		pthread_mutex_unlock(&philo->data->print_lock);
 		print_status(philo, "is eating");
+		pthread_mutex_lock(&philo->data->print_lock);
 		philo->meals_eaten++;
+		pthread_mutex_unlock(&philo->data->print_lock);
 		smart_sleep(philo, philo->data->time_to_eat);
 		drop_forks(philo);
 		print_status(philo, "is sleeping");
