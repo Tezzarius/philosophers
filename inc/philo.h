@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 14:54:13 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/11/05 13:41:52 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/05 14:33:56 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <unistd.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include <string.h>
 
 /* ************************************************************************** */
 /*                                    DEFINES                                 */
@@ -44,6 +45,7 @@ typedef struct s_data
 	pthread_mutex_t	lock;
 	int				someone_dead;
 	int				ready;
+	int				mutex_count;
 }	t_data;
 
 typedef struct s_philo
@@ -60,9 +62,6 @@ typedef struct s_philo
 /* ************************************************************************** */
 
 int			parse_args(t_data *data, int ac, char **av);
-void		*routine_even(void *arg);
-void		*routine_odd(void *arg);
-void		*routine_single(void *arg);
 int			init_forks(t_data *data);
 int			init_philos(t_data *data);
 long		timestamp_ms(void);
@@ -71,5 +70,6 @@ void		take_forks(t_philo *philo);
 void		drop_forks(t_philo *philo);
 void		*monitor(void *arg);
 void		smart_sleep(t_philo *philo, long long ms);
+int			create_philo(t_data *data, int i);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 19:57:29 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/11/03 11:28:17 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/05 14:39:14 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,12 @@ int	init_forks(t_data *data)
 		return (1);
 	i = -1;
 	while (++i < data->philo_count)
+	{
 		if (pthread_mutex_init(&data->forks[i], NULL) != 0)
 			return (1);
+		else
+			data->mutex_count++;
+	}
 	return (0);
 }
 

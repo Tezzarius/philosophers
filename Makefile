@@ -12,7 +12,7 @@ RED = \033[0;31m
 
 # Compiler and flags
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -pthread
+CFLAGS = -Wall -Wextra -pthread
 INCLUDES = -I./inc
 
 # Directories

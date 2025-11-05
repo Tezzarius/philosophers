@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 11:50:37 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/11/05 13:34:42 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/05 14:38:18 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	parse_args(t_data *data, int ac, char **av)
 {
 	int	i;
 
+	memset(data, 0, sizeof(t_data));
 	if (ac != 5 && ac != 6)
 		return (printf("Usage: philos, die, eat, sleep, must_eat(opt)"), 1);
 	i = 0;
@@ -51,7 +52,6 @@ int	parse_args(t_data *data, int ac, char **av)
 	data->time_to_die = philo_atoi(av[2]);
 	data->time_to_eat = philo_atoi(av[3]);
 	data->time_to_sleep = philo_atoi(av[4]);
-	data->ready = 0;
 	data->must_eat = -1;
 	if (ac == 6)
 		data->must_eat = philo_atoi(av[5]);
