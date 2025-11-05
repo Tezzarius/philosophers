@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 20:06:22 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/11/05 14:52:28 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/05 15:18:09 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,8 @@ int	create_philo(t_data *data, int i)
 {
 	data->philos[i].meals_eaten = 0;
 	if ((data->philo_count) == 1)
-		if (pthread_create(&data->philos[i].thread, NULL,
-				routine_single, &data->philos[i]))
+		if (pthread_create(&data->philos[0].thread, NULL,
+				routine_single, &data->philos[0]))
 			return (0);
 	if ((data->philo_count % 2) == 0)
 	{
