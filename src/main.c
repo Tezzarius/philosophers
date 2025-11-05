@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 15:27:27 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/11/03 14:18:10 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/05 13:45:34 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,37 @@ static void	cleanup(t_data *data)
 	i = 0;
 	while (i < data->philo_count)
 		pthread_mutex_destroy(&data->forks[i++]);
-	pthread_mutex_destroy(&data->print_lock);
+	pthread_mutex_destroy(&data->lock);
 	free(data->forks);
 	free(data->philos);
 }
 
-// Debug
-//
-// static void	print_data(t_data *data)
-// {
-// 	printf("philos: %d\ndie: %d\neat: %d\nsleep: %d\nmust_eat: %d\n",
-// 		data->philo_count, data->time_to_die, data->time_to_eat,
-// 		data->time_to_sleep, data->must_eat);
-// }
+static int	create_thread(t_data *data, int i)
+{
+	data->philos[i].last_meal = data->start_time;
+	data->philos[i].meals_eaten = 0;
+	if ((data->philo_count) == 1)
+	{	
+		if (pthread_create(&data->philos[i].thread, NULL, routine_single, &data->philos[i]))
+			return (0);
+	}
+	else if ((data->philo_count % 2) == 0)
+	{
+		if (pthread_create(&data->philos[i].thread, NULL, routine_even, &data->philos[i]))
+		{
+			while (i >= 0)
+				pthread_join(data->philos[i--].thread, NULL);
+			return ((data->ready = -1), 0);
+		}
+	}
+	else if (pthread_create(&data->philos[i].thread, NULL, routine_odd, &data->philos[i]))
+	{
+		while (i >= 0)
+			pthread_join(data->philos[i--].thread, NULL);
+		return ((data->ready = -1), 0);
+	}
+	return (1);
+}
 
 int	main(int ac, char **av)
 {
@@ -43,29 +61,16 @@ int	main(int ac, char **av)
 		return (1);
 	if (init_forks(&data) || init_philos(&data))
 		return (printf("Error: Init failed.\n"), 1);
-	pthread_mutex_init(&data.print_lock, NULL);
+	pthread_mutex_init(&data.lock, NULL);
 	data.someone_dead = 0;
 	data.start_time = timestamp_ms();
-	if (data.philo_count == 1)
-	{
-		data.philos[0].last_meal = data.start_time;
-		data.philos[0].meals_eaten = 0;		
-		pthread_create(&data.philos[0].thread, NULL, routine_single, &data.philos[0]);
-	}
-	else
-	{	
-		i = -1;
-		while (++i < data.philo_count)
-		{
-			data.philos[i].last_meal = data.start_time;
-			data.philos[i].meals_eaten = 0;
-			if ((data.philo_count % 2) == 0)
-				pthread_create(&data.philos[i].thread, NULL, routine_even, &data.philos[i]);
-			else
-				pthread_create(&data.philos[i].thread, NULL, routine_odd, &data.philos[i]);
-		}
-	}
-	pthread_create(&monitor_thread, NULL, monitor, &data);
+	i = -1;
+	while (++i < data.philo_count)
+		if (!create_thread(&data, i))
+			return (0);
+	if (pthread_create(&monitor_thread, NULL, monitor, &data))
+		return (1);
+	data.ready = 1;
 	pthread_join(monitor_thread, NULL);
 	i = 0;
 	while (i < data.philo_count)

@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 11:50:37 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/11/03 11:27:16 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/05 13:34:42 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int	parse_args(t_data *data, int ac, char **av)
 	data->time_to_die = philo_atoi(av[2]);
 	data->time_to_eat = philo_atoi(av[3]);
 	data->time_to_sleep = philo_atoi(av[4]);
+	data->ready = 0;
 	data->must_eat = -1;
 	if (ac == 6)
 		data->must_eat = philo_atoi(av[5]);

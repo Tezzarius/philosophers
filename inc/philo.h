@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 14:54:13 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/11/03 15:53:45 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/05 13:41:52 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,12 @@ typedef struct s_data
 	int				time_to_eat;
 	int				time_to_sleep;
 	int				must_eat;
-	long long		start_time;
+	long			start_time;
 	pthread_mutex_t	*forks;
 	struct s_philo	*philos;
-	pthread_mutex_t	print_lock;
+	pthread_mutex_t	lock;
 	int				someone_dead;
+	int				ready;
 }	t_data;
 
 typedef struct s_philo
@@ -64,12 +65,11 @@ void		*routine_odd(void *arg);
 void		*routine_single(void *arg);
 int			init_forks(t_data *data);
 int			init_philos(t_data *data);
-long long	timestamp_ms(void);
+long		timestamp_ms(void);
 void		print_status(t_philo *philo, char *msg);
 void		take_forks(t_philo *philo);
 void		drop_forks(t_philo *philo);
 void		*monitor(void *arg);
 void		smart_sleep(t_philo *philo, long long ms);
-int			create_thread(t_data *data, int i);
 
 #endif
