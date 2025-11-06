@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 20:06:22 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/11/05 15:18:09 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/06 11:59:29 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,12 @@ static void	*routine_single(void *arg)
 	philo = (t_philo *)arg;
 	pthread_mutex_lock(&philo->data->forks[philo->id]);
 	print_status(philo, "has taken a fork");
-	usleep(philo->data->time_to_die * 1000);
+	while (!philo->data->someone_dead)
+	{
+		usleep(1000);
+		if ((timestamp_ms() - philo->last_meal) > philo->data->time_to_die)
+			break;
+	}
 	pthread_mutex_unlock(&philo->data->forks[philo->id]);
 	return (NULL);
 }
