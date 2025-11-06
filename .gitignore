@@ -3,3 +3,4 @@
 *.o
 philo
 test.sh
+.gitignore
