@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/20 14:54:13 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/11/05 14:33:56 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/06 15:55:15 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,16 @@ typedef struct s_philo
 /*                                  PROTOTYPES                                */
 /* ************************************************************************** */
 
-int			parse_args(t_data *data, int ac, char **av);
-int			init_forks(t_data *data);
-int			init_philos(t_data *data);
-long		timestamp_ms(void);
-void		print_status(t_philo *philo, char *msg);
-void		take_forks(t_philo *philo);
-void		drop_forks(t_philo *philo);
-void		*monitor(void *arg);
-void		smart_sleep(t_philo *philo, long long ms);
-int			create_philo(t_data *data, int i);
+int		parse_args(t_data *data, int ac, char **av);
+int		init_forks(t_data *data);
+int		init_philos(t_data *data);
+long	timestamp_ms(void);
+void	print_status(t_philo *philo, char *msg);
+void	take_forks(t_philo *philo);
+void	drop_forks(t_philo *philo);
+void	*monitor(void *arg);
+void	smart_sleep(t_philo *philo, long long ms);
+int		create_philo(t_data *data, int i);
+void	*routine_single(void *arg);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 21:03:34 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/11/05 15:09:13 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/06 16:10:24 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	*monitor(void *arg)
 			pthread_mutex_unlock(&data->lock);
 			return (NULL);
 		}
-		usleep(1000);
+		usleep(500);
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 15:27:27 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/11/06 12:05:30 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/06 16:03:10 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static int	create_threads(t_data *data)
 	int	i;
 
 	i = -1;
-	data->start_time = timestamp_ms();
 	while (++i < data->philo_count)
 		if (!create_philo(data, i))
 			return (0);
@@ -42,10 +41,12 @@ static void	join_threads(t_data *data, pthread_t monitor_thread)
 {
 	int	i;
 
-	pthread_join(monitor_thread, NULL);
+	if (pthread_join(monitor_thread, NULL))
+		return ;
 	i = 0;
 	while (i < data->philo_count)
-		pthread_join(data->philos[i++].thread, NULL);
+		if (pthread_join(data->philos[i++].thread, NULL))
+			return ;
 }
 
 static void	start_simulation(t_data *data)
@@ -67,6 +68,15 @@ int	main(int ac, char **av)
 		return (cleanup(&data), 1);
 	if (init_forks(&data) || init_philos(&data))
 		return (cleanup(&data), printf("Error: Init failed.\n"), 1);
+	data.start_time = timestamp_ms();
+	if (data.philo_count == 1)
+	{
+		if (pthread_create(&data.philos[0].thread, NULL,
+				routine_single, &data.philos[0]))
+			return (1);
+		pthread_join(data.philos[0].thread, NULL);
+		return (0);
+	}
 	pthread_mutex_init(&data.lock, NULL);
 	if (!create_threads(&data))
 		return (cleanup(&data), 1);

@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/28 20:06:22 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/11/06 11:59:29 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/06 16:12:57 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,18 @@ static void	*routine_even(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while (1)
-	{
-		if (philo->data->ready == 1)
-			break ;
-		else if (philo->data->ready == -1)
-			return (NULL);
-	}
+	while (philo->data->ready == 0)
+		usleep(100);
+	if (philo->data->ready == -1)
+		return (NULL);
 	if (philo->id % 2 == 0)
 		usleep(1000);
 	while (!philo->data->someone_dead)
+	{
 		if (!philo_to_do(philo))
 			return (NULL);
+		usleep(1000);
+	}
 	return (NULL);
 }
 
@@ -57,13 +57,10 @@ static void	*routine_odd(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	while (1)
-	{
-		if (philo->data->ready == 1)
-			break ;
-		else if (philo->data->ready == -1)
-			return (NULL);
-	}
+	while (philo->data->ready == 0)
+		usleep(100);
+	if (philo->data->ready == -1)
+		return (NULL);
 	if (philo->id == 0 || philo->id % 2 == 1)
 		smart_sleep(philo, philo->data->time_to_eat);
 	while (!philo->data->someone_dead)
@@ -75,30 +72,22 @@ static void	*routine_odd(void *arg)
 	return (NULL);
 }
 
-static void	*routine_single(void *arg)
+void	*routine_single(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
 	pthread_mutex_lock(&philo->data->forks[philo->id]);
 	print_status(philo, "has taken a fork");
-	while (!philo->data->someone_dead)
-	{
-		usleep(1000);
-		if ((timestamp_ms() - philo->last_meal) > philo->data->time_to_die)
-			break;
-	}
 	pthread_mutex_unlock(&philo->data->forks[philo->id]);
+	smart_sleep(philo, philo->data->time_to_die);
+	print_status(philo, "died");
 	return (NULL);
 }
 
 int	create_philo(t_data *data, int i)
 {
 	data->philos[i].meals_eaten = 0;
-	if ((data->philo_count) == 1)
-		if (pthread_create(&data->philos[0].thread, NULL,
-				routine_single, &data->philos[0]))
-			return (0);
 	if ((data->philo_count % 2) == 0)
 	{
 		if (pthread_create(&data->philos[i].thread, NULL,
