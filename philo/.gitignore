@@ -1,0 +1,4 @@
+./obj
+*.o
+philo
+test.sh
