@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/25 11:50:37 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/11/05 14:38:18 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/25 16:13:07 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,8 @@ int	parse_args(t_data *data, int ac, char **av)
 	data->must_eat = -1;
 	if (ac == 6)
 		data->must_eat = philo_atoi(av[5]);
-	if (data->philo_count < 1 || data->time_to_die < 1
-		|| data->time_to_eat < 1 || data->time_to_sleep < 1)
-		return (printf("Error: Values must be greater than 0.\n"), 1);
+	if (data->philo_count < 1 || data->time_to_die < 60
+		|| data->time_to_eat < 60 || data->time_to_sleep < 60)
+		return (printf("Error: Wrong values detected.\n"), 1);
 	return (0);
 }
