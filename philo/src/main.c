@@ -6,7 +6,7 @@
 /*   By: bschwarz <bschwarz@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/24 15:27:27 by bschwarz          #+#    #+#             */
-/*   Updated: 2025/11/08 15:47:33 by bschwarz         ###   ########.fr       */
+/*   Updated: 2025/11/25 11:28:51 by bschwarz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	main(int ac, char **av)
 				routine_single, &data.philos[0]))
 			return (1);
 		pthread_join(data.philos[0].thread, NULL);
-		return (0);
+		return (cleanup(&data), 0);
 	}
 	pthread_mutex_init(&data.lock, NULL);
 	if (!create_threads(&data))
